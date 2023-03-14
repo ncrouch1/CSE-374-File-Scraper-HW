@@ -1,0 +1,22 @@
+#!/bin/bash
+
+PATH="~/hw4:$PATH"
+export PATH
+
+if [ $# -eq 0 ]; then
+    echo "Error: No arguments given" 1> 2
+    exit 1
+fi
+
+
+if [ $# -lt 1 ]; then
+    echo "Usage $0 requires an input file" 1> 2
+    exit 1
+fi
+
+if wget -O file $1 2> 1
+then ./wordcount -w file
+     rm file
+else exit 1
+fi
+exit 0

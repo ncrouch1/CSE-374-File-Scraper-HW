@@ -1,0 +1,34 @@
+#!/bin/bash
+
+PATH="~/hw4:$PATH"
+export PATH
+
+if [ $# -lt 2 ]
+then
+    echo "Usage: $0 [output] [input]"
+    exit 1
+fi
+
+if [ -f $1 ]
+then
+    echo "Error: output file should not exist"
+    exit 1
+fi
+
+count=0
+while read -r line;
+do
+    echo "Performing wordcount measurement on $line"
+    if [ measurepage "$line" 2> /dev/null -ne 1 ] 
+    then
+	echo "...failure"
+    else
+       let count++
+       var=$(measurepage "$line")
+       echo "$count $var" >> "$1"
+       echo "...successful"
+    fi
+    
+done < "$2"
+
+exit 0

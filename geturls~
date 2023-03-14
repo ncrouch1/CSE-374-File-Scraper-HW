@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+   echo "Usage: $0 [output file] [input file]" 1>2
+   exit 1
+fi
+
+if [ ! -f $2 ]; then
+    echo "Error: Input file must exist" 1> 2
+    exit 1
+fi
+
+if [ -f $1 ]; then
+   echo "Error: Output file should not exist" 1> 2
+   exit 0
+fi
+
+
+grep -s 'test' $2  1> /dev/null 
+if [ $? -eq 0 ]
+then
+    grep -Eo '../lectures/ccode/[a-zA-Z0-9./?=_%:-]*' $2 > $1
+else
+    echo "Error: Bad input file" 1> 2
+    exit 1
+fi
+
+
+sed -i '/[^.c]$/d' $1
+sed -i 's\..\https://courses.cs.washington.edu/courses/cse374/22au\' $1
+
+
+exit 0
